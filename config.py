@@ -9,7 +9,7 @@ def get_config():
         "batch_size": 8,
         "num_epochs": 20,
         "lr": 10**-4,
-        "seq_Len": 350, #Eng to Italian is 350, check for another pairs you would like to train
+        "seq_len": 350, #Eng to Italian is 350, check for another pairs you would like to train
         "d_model": 512,
         "lang_src": "en",
         "lang_tgt": "it",

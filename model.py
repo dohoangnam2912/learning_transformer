@@ -31,7 +31,7 @@ class PositionalEncoding(nn.Module):
         # Create a matrix of shape (seq_len, d_model)
         pe = torch.zeros(seq_len, d_model)
         # Create a vector of shape (seq_len, 1)
-        position = torch.arange(0, seq_len, dtype=torch.flat).unsqueeze(1)
+        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
         div_term = torch.exp(torch.arange(0, d_model,2).float() * (-math.log(10000.0) / d_model))
         # Apply the sin to even positions
         pe[:, 0::2] = torch.sin(position * div_term)
@@ -74,7 +74,7 @@ class FeedForwardBlock(nn.Module):
 
     def forward(self, x):
         # (Batch, seq_len, d_model) ----> (Batch, seq_len, d_ff) ----> (Batch, seq_len, d_model) 
-        return self.linear_2(self.dropout(torch.ReLU(self.linear_1(x))))
+        return self.linear_2(self.dropout(torch.relu(self.linear_1(x))))
     
 class MultiHeadAttentionBlock(nn.Module):
     """
@@ -177,7 +177,7 @@ class Encoder(nn.Module):
             x = layer(x, mask)
         return self.norm(x)
     
-class DecoderBlock(nn.module):
+class DecoderBlock(nn.Module):
 
     def __init__(self, self_attention_block:MultiHeadAttentionBlock, cross_attention_block: MultiHeadAttentionBlock, feed_forward_block: FeedForwardBlock, dropout: float) -> None:
         super().__init__()
